@@ -1,0 +1,19 @@
+.carousel-container {
+  display: flex;
+  /* width: 100%; */
+  /* Adjust this width as needed */
+  justify-content: center;
+  /* overflow: hidden; */
+  /* Prevent overflow */
+  position: relative;
+  /* Required for absolute positioning of Carousel items */
+}
+
+.carousel-image {
+  width: 100%;
+  /* Set width to 100% of the image wrapper */
+  height: 450px;
+  /* Set a fixed height for all images */
+  object-fit: cover;
+  /* Maintain aspect ratio and fill the space */
+}

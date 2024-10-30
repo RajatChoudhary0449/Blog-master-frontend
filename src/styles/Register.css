@@ -1,0 +1,42 @@
+.eraser-btn {
+    display: flex;
+    align-items: center;
+    background-color: #f44336;
+    /* Red color for visibility */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.eraser-btn i {
+    margin-right: 8px;
+    /* Spacing between icon and text */
+}
+
+.eraser-btn:hover {
+    background-color: #d32f2f;
+    /* Darker red on hover */
+    transform: scale(1.05);
+    /* Slight scaling effect */
+}
+
+.eraser-btn:focus {
+    outline: none;
+    /* Remove default outline */
+}
+
+.eraser-btn:active {
+    transform: scale(0.95);
+    /* Button shrink effect on click */
+}
+
+span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Aligns items vertically */
+}
