@@ -14,6 +14,7 @@ function UpdateCategory() {
     const [isLoading, setIsLoading] = useState(false);
     const nav = useNavigate();
     const params = useParams();
+    const user_id = useUserData().user_id;
     const handleUpdateCategoryChange = (event) => {
         setUpdateCategory({
             ...category,
@@ -21,6 +22,8 @@ function UpdateCategory() {
         });
     };
     const fetchCategory = async () => {
+        const user = await apiInstance.get(`author/dashboard/${user_id}`);
+        if (!user.data.is_superuser) nav(`/category`);
         const response = await apiInstance.get(`post/category/list/`);
         response.data = response.data.filter(c => c.slug === params.slug);
         setUpdateCategory({

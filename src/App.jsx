@@ -52,7 +52,6 @@ function App() {
             <Route path="/edit-category/:slug" element={<ProtectedRoutes element={<UpdateCategory />} />} />
             <Route path="/bookmark-post" element={<ProtectedRoutes element={<Bookmark />} />} />
             <Route path="/edit-post/:user_id/:id" element={<ProtectedRoutes element={<EditPost />} />} />
-            {/* <Route path="/profile" element={<ProtectedRoutes element={<Profile />} />} /> */}
             <Route path="/comments" element={<ProtectedRoutes element={<Comments />} />} />
             <Route path="/notifications" element={<ProtectedRoutes element={<Notifications />} />} />
             <Route path="/edit-profile/:id" element={<ProtectedRoutes element={<EditProfile />} />} />

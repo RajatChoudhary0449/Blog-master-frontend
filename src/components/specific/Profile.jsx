@@ -23,7 +23,6 @@ function Profile() {
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const [disabled, setdisabled] = useState(true);
     const nav = useNavigate();
-    const [imagePreview, setImagePreview] = useState("");
     const handleDelete = async (postId) => {
         if (window.confirm("Are you sure you want to delete this post?")) {
             try {
@@ -95,7 +94,7 @@ function Profile() {
                             <div className="card">
                                 {/* Card header */}
                                 <div className="card-header d-flex justify-content-between align-items-center">
-                                    <h3 className="mb-0">Your Profile</h3>
+                                    <h3 className="mb-0">Profile</h3>
                                     <button className="btn btn-warning" disabled={disabled}>
                                         <Link to={`/edit-profile/${userId}`} className="text-decoration-none text-black">
                                             <i className="fas fa-pencil"></i> Edit Profile
@@ -112,7 +111,7 @@ function Profile() {
                                 <div className="card-body text-center">
                                     <div className="d-lg-flex align-items-center justify-content-center">
                                         <img
-                                            src={imagePreview || profileData?.image}
+                                            src={profileData?.image}
                                             id="img-uploaded"
                                             className="avatar-xl rounded-circle"
                                             alt="avatar"

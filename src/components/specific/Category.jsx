@@ -4,6 +4,7 @@ import Footer from "../common/Footer";
 import { Link } from "react-router-dom";
 import apiInstance from "../../services/axios";
 import { useAuthStore } from "../../services/store/authStore";
+import useUserData from "../../hooks/useUserData";
 
 function Category() {
     const [category, setcategory] = useState([]);
@@ -15,7 +16,8 @@ function Category() {
     const categoryperpage = 8;
     const [allpages, setallpages] = useState([]);
     const [page, setpage] = useState(1);
-
+    const user_id = useUserData().user_id
+    const [disabled, setdisabled] = useState(true);
     const fetchCategories = async () => {
         const response = await apiInstance.get(`post/category/list`)
         let allpages2 = [];
@@ -27,12 +29,21 @@ function Category() {
         setfilteredcategory(response.data.slice(0, Math.min(response.data.length, categoryperpage)))
         setcategory(response.data);
     };
+    const fetchUser = async () => {
+        const user = await apiInstance.get(`author/dashboard/${user_id}`);
+        console.log(user.data);
+        if (user.data.is_superuser) {
+            setdisabled(false);
+        }
+    }
     const handlepagechange = (pagenumber) => {
         setpage(pagenumber);
         setfilteredcategory(category.slice(categoryperpage * (pagenumber - 1), Math.min(category.length, categoryperpage * (pagenumber))));
     }
     useEffect(() => {
         handlepagechange(1);
+        if (isLoggedIn())
+            fetchUser();
     }, [category])
     const fetchPost = async () => {
         const response = await apiInstance.get(`post/lists`);
@@ -57,10 +68,6 @@ function Category() {
     }
 
     const handleDelete = async (curcategory) => {
-        if (curcategory.post_count !== 0) {
-            alert("Category must be empty in order to perform deletion, Try to remove the posts within first");
-            return;
-        }
         if (window.confirm("Are you sure you want to delete this category?")) {
             try {
                 await apiInstance.delete(`author/dashboard/category-delete/${curcategory?.slug}`);
@@ -127,9 +134,13 @@ function Category() {
                                 <option value="Views">View</option>
                                 <option value="Comments">Comment</option>
                             </select>
-                            <a href="/add-category/" className="btn btn-sm btn-primary p-2 mt-2" style={{ display: 'flow-root', alignItems: 'center', fontWeight: "bold" }} >
-                                Add New <i className="fas fa-plus ms-1"></i>
-                            </a>
+                            <button className="btn btn-sm btn-primary p-2 mt-2" disabled={disabled}>
+                                <Link to='/add-category' className="text-white text-decoration-none ">
+                                    <i className="fas fa-plus ms-1"></i>Add New
+                                </Link>
+                            </button>
+                            {/* <a href="/add-category/" className="btn btn-sm btn-primary p-2 mt-2" style={{ display: 'flow-root', alignItems: 'center', fontWeight: "bold" }} >
+                            </a> */}
                         </div>
                         <h2 className="d-flex align-items-center justify-content-between mt-3">
                             <div className="d-flex align-items-center">
@@ -156,11 +167,11 @@ function Category() {
                                                 </Link>
                                                 <div className="d-flex">
                                                     <Link to={`/edit-category/${c.slug}`} className="me-2">
-                                                        <button className="btn btn-primary" disabled={!isLoggedIn()}>
+                                                        <button className="btn btn-primary" disabled={disabled}>
                                                             <i className="bi bi-pencil" />
                                                         </button>
                                                     </Link>
-                                                    <button className="btn btn-danger" disabled={!isLoggedIn()} onClick={() => handleDelete(c)}>
+                                                    <button className="btn btn-danger" disabled={disabled} onClick={() => handleDelete(c)}>
                                                         <i className="bi bi-trash" />
                                                     </button>
                                                 </div>

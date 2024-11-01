@@ -15,7 +15,21 @@ function AddCategory() {
     const userId = useUserData()?.user_id;
     const nav = useNavigate();
     if (!userId) navigate(`/login`);
-
+    useEffect(() => {
+        fetchUser();
+    }, [])
+    const fetchUser = async () => {
+        let user;
+        try {
+            user = await apiInstance.get(`author/dashboard/${userId}`);
+        }
+        catch (error) {
+            console.log(error);
+        }
+        if (!user.data.is_superuser) {
+            nav(`/category`);
+        }
+    }
     const handleCreateCategoryChange = (event) => {
         setCreateCategory({
             ...category,
