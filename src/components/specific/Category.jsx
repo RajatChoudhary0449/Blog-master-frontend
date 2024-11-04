@@ -16,7 +16,7 @@ function Category() {
     const categoryperpage = 8;
     const [allpages, setallpages] = useState([]);
     const [page, setpage] = useState(1);
-    const user_id = useUserData().user_id
+    const user_id = useUserData()?.user_id
     const [disabled, setdisabled] = useState(true);
     const fetchCategories = async () => {
         const response = await apiInstance.get(`post/category/list`)
@@ -31,7 +31,6 @@ function Category() {
     };
     const fetchUser = async () => {
         const user = await apiInstance.get(`author/dashboard/${user_id}`);
-        console.log(user.data);
         if (user.data.is_superuser) {
             setdisabled(false);
         }

@@ -119,7 +119,7 @@ function Dashboard() {
                                                     <div className="d-flex position-relative">
                                                         <img className="w-60 rounded" src={p?.image} style={{ width: "100px", height: "110px", objectFit: "cover", borderRadius: "10px" }} alt="product" />
                                                         <div className="ms-3">
-                                                            <Link to={`/${p?.slug}`} className="h6 stretched-link text-decoration-none text-dark">
+                                                            <Link to={`/ ${p?.slug}`} className="h6 stretched-link text-decoration-none text-dark">
                                                                 {p.title}
                                                             </Link>
                                                             <p className="small mb-0 mt-3">
@@ -163,7 +163,7 @@ function Dashboard() {
                                                 <div className="col-12" >
                                                     <div className="d-flex align-items-center position-relative">
                                                         <div className="avatar avatar-lg flex-shrink-0">
-                                                            <img className="avatar-img" src="http://127.0.0.1:8000/media/image/img4.jpg" style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} alt="avatar" />
+                                                            <img className="avatar-img" src={`${import.meta.env.VITE_API_URL_MEDIA}/image/img4.jpg`} style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} alt="avatar" />
                                                         </div>
                                                         <div className="ms-3">
                                                             <p className="mb-1 h6 stretched-link text-decoration-none text-dark">

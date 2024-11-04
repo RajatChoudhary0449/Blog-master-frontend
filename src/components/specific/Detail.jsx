@@ -16,7 +16,7 @@ function Detail() {
     const [createcomment, setcreatecomment] = useState({ full_name: useUserData() ? useUserData().full_name : "", email: useUserData() ? useUserData().email : "", comment: "" })
     const param = useParams();
     const user_id = useUserData()?.user_id;
-    const [image, setimage] = useState("http://127.0.0.1:8000/media/image/img4.jpg");
+    const [image, setimage] = useState(`${import.meta.env.VITE_API_URL_MEDIA}image/img4.jpg`);
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const [canreply, setcanreply] = useState(false);
     const [reply, setreply] = useState("");

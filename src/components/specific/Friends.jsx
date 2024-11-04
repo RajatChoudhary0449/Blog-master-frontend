@@ -3,13 +3,13 @@ import Header from '../common/Header'
 import Footer from '../common/Footer'
 import apiInstance from '../../services/axios'
 import useUserData from '../../hooks/useUserData'
-
+import { Link } from 'react-router-dom'
 export default function Friends() {
     const user_id = useUserData()?.user_id
     const [suggestions, setsuggestions] = useState([]);
     const [requests_out, setrequests_out] = useState([]);
     const [requests_in, setrequests_in] = useState([]);
-    const [friends, setfriends] = useState([]);
+    const [followings, setfollowings] = useState([]);
     const [followers, setfollowers] = useState([]);
     const handleSendRequest = async (to_id) => {
         try {
@@ -61,11 +61,11 @@ export default function Friends() {
         const follow = await apiInstance.get(`friend-following/${user_id}`);
         const requests_out = user.data.requests_out;
         const requests_in = user.data.requests_in;
-        const friends_res = user.data.friends;
+        const followings_res = user.data.friends;
         const userssuggestions = [];
         const usersrequestsout = [];
         const usersrequestsin = [];
-        const usersfriends = [];
+        const usersfollowerings = [];
         const userfollowers = [];
 
 
@@ -84,15 +84,14 @@ export default function Friends() {
                 await apiInstance.get(`user/profile/${it.id}/`).then(res => usersrequestsin.push(res.data));
             }
         }
-        if (friends_res?.length) {
-            for (let it of friends_res) {
-                await apiInstance.get(`user/profile/${it.id}/`).then(res => usersfriends.push(res.data));
-            }
-        }
-
         if (follow?.data?.length) {
             for (let it of follow.data) {
                 await apiInstance.get(`user/profile/${it.id}/`).then(res => userfollowers.push(res.data));
+            }
+        }
+        if (followings_res?.length) {
+            for (let it of followings_res) {
+                await apiInstance.get(`user/profile/${it.id}/`).then(res => usersfollowerings.push(res.data));
             }
         }
 
@@ -100,7 +99,7 @@ export default function Friends() {
         setrequests_in(usersrequestsin);
         setrequests_out(usersrequestsout);
         setfollowers(userfollowers);
-        setfriends(usersfriends);
+        setfollowings(usersfollowerings);
     }
     useEffect(() => {
         fetchData();
@@ -155,7 +154,9 @@ export default function Friends() {
                                                     <tr key={index}>
                                                         <td>
                                                             <h6 className="mt-2 mt-md-0 mb-0 ">
-                                                                {s.full_name}
+                                                                <Link to={`/profile/${s.id}`} className='text-decoration-none text-black'>
+                                                                    {s.full_name}
+                                                                </Link>
                                                             </h6>
                                                         </td>
                                                         <td>
@@ -170,6 +171,11 @@ export default function Friends() {
                                                             <div className="d-flex gap-2">
                                                                 <button className="btn btn-success" onClick={(e) => handleSendRequest(s.id)}>
                                                                     <i className="fa-solid fa-share-from-square"></i> Send Request
+                                                                </button>
+                                                                <button className="btn btn-info" >
+                                                                    <Link to={`/profile/${s.id}`} className='text-decoration-none text-white'>
+                                                                        <i className="fas fa-user" /> View Profile
+                                                                    </Link>
                                                                 </button>
                                                             </div>
                                                         </td>
@@ -225,7 +231,9 @@ export default function Friends() {
                                                     <tr key={index}>
                                                         <td>
                                                             <h6 className="mt-2 mt-md-0 mb-0 ">
-                                                                {s.full_name}
+                                                                <Link to={`/profile/${s.id}`} className='text-decoration-none text-black'>
+                                                                    {s.full_name}
+                                                                </Link>
                                                             </h6>
                                                         </td>
                                                         <td>
@@ -238,6 +246,11 @@ export default function Friends() {
                                                         </td>
                                                         <td>
                                                             <div className="d-flex gap-2">
+                                                                <button className='btn btn-info'>
+                                                                    <Link to={`/profile/${s.id}`} className='text-decoration-none text-black'>
+                                                                        View Profile
+                                                                    </Link>
+                                                                </button>
                                                                 <button className="btn btn-warning" onClick={() => rejectrequest(user_id, s.id)}>
                                                                     <i className="fas fa-undo" /> Withdraw Request
                                                                 </button>
@@ -295,7 +308,9 @@ export default function Friends() {
                                                     <tr key={index}>
                                                         <td>
                                                             <h6 className="mt-2 mt-md-0 mb-0 ">
-                                                                {r.full_name}
+                                                                <Link to={`/profile/${r.id}`} className='text-decoration-none text-black'>
+                                                                    {r.full_name}
+                                                                </Link>
                                                             </h6>
                                                         </td>
                                                         <td>
@@ -358,6 +373,7 @@ export default function Friends() {
                                                     <tr key={index}>
                                                         <td>
                                                             <h6 className="mt-2 mt-md-0 mb-0 ">
+                                                                <Link to={`/profile/${f.id}`}></Link>
                                                                 {f.full_name}
                                                             </h6>
                                                         </td>
@@ -389,7 +405,7 @@ export default function Friends() {
                                 <div className="card-header bg-transparent border-bottom p-3">
                                     <div className="d-sm-flex justify-content-between align-items-center">
                                         <h5 className="mb-2 mb-sm-0">
-                                            Friends <span className="badge bg-primary bg-opacity-10 text-primary">{friends.length}</span>
+                                            Following <span className="badge bg-primary bg-opacity-10 text-primary">{followings.length}</span>
                                         </h5>
                                     </div>
                                 </div>
@@ -409,7 +425,7 @@ export default function Friends() {
                                             <thead className="table-dark">
                                                 <tr>
                                                     <th scope="col" className="border-0 rounded-start">
-                                                        Friend Name
+                                                        Following Name
                                                     </th>
                                                     <th scope="col" className="border-0">
                                                         Image
@@ -424,7 +440,7 @@ export default function Friends() {
                                             </thead>
 
                                             <tbody className="border-top-0">
-                                                {friends?.map((f, index) => (
+                                                {followings?.map((f, index) => (
                                                     <tr key={index}>
                                                         <td>
                                                             <h6 className="mt-2 mt-md-0 mb-0 ">
@@ -442,10 +458,12 @@ export default function Friends() {
                                                         <td>
                                                             <div className="d-flex gap-2">
                                                                 <button className="btn btn-info" >
-                                                                    <i className="fas fa-user" /> View Profile
+                                                                    <Link to={`/profile/${f.id}`} className='text-decoration-none text-white'>
+                                                                        <i className="fas fa-user" /> View Profile
+                                                                    </Link>
                                                                 </button>
                                                                 <button className="btn btn-danger" onClick={() => friendremove(user_id, f.id)} >
-                                                                    <i className="fas fa-trash" /> Remove friend
+                                                                    <i className="fas fa-trash" /> Remove Following
                                                                 </button>
                                                             </div>
                                                         </td>

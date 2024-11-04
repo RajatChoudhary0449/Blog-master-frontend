@@ -57,8 +57,6 @@ function Profile() {
                 posts_res.data = posts_res.data.filter(data => data.status === "Active");
             }
             setPost(posts_res?.data)
-            // console.log(user.data);
-            // console.log(posts_res.data);
         }
         catch (error) {
             if (error.status === 500) {

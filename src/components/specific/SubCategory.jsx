@@ -6,12 +6,15 @@ import Footer from '../common/Footer';
 import Moment from '../../utils/Moment';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../services/store/authStore';
+import useUserData from '../../hooks/useUserData';
 export default function SubCategory() {
     const param = useParams();
     const [posts, setposts] = useState([]);
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+    const user_id = useUserData()?.user_id;
     const [category, setcategory] = useState({});
     const nav = useNavigate();
+    const [disabled, setdisabled] = useState(true);
     const fetchposts = async () => {
         try {
             const response = await apiInstance.get(`post/category/post/${param.slug}`);
@@ -25,6 +28,18 @@ export default function SubCategory() {
         }
     }
     const fetchcategory = async () => {
+        if (isLoggedIn()) {
+            let user;
+            try {
+                user = await apiInstance.get(`author/dashboard/${user_id}`);
+            }
+            catch (error) {
+                console.log(error);
+            }
+            if (user.data.is_superuser) {
+                setdisabled(false);
+            }
+        }
         try {
             let response = await apiInstance.get(`post/category/list`);
             response = response?.data?.filter((c) => c.slug === param.slug);
@@ -76,16 +91,13 @@ export default function SubCategory() {
                                 <i className="fas fa-arrow-left me-2"></i>
                                 Back to Categories
                             </Link>
-                            <Link to={`/edit-category/${param.slug}`} className="btn btn-primary d-flex align-items-center shadow-sm">
-                                <i className="fas fa-edit me-2"></i>
-                                Update
-                            </Link>
+                            <button className='btn btn-primary' disabled={disabled}>
+                                <Link to={`/edit-category/${param.slug}`} className="d-flex align-items-center text-white text-decoration-none" >
+                                    <i className="fas fa-edit me-2"></i>
+                                    Update
+                                </Link>
+                            </button>
                         </div>
-                        {/* <Link to="/category/" className="btn btn-light d-flex align-items-center">
-                            <i className="fas fa-arrow-left me-2"></i>
-                            Back to Categories
-                        </Link>
-                        <Link to={`/edit-category`}>Update</Link> */}
                     </div>
                 </div>
             </div>

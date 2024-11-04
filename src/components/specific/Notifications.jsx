@@ -15,7 +15,6 @@ function Notifications() {
         try {
             const noti_res = await apiInstance.get(`author/dashboard/noti-list/${user_id}/`);
             setNoti(noti_res.data);
-            console.log(noti_res.data);
         }
         catch (error) {
             console.log(error)

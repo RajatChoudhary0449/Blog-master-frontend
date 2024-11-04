@@ -6,7 +6,7 @@ import useUserData from "../../hooks/useUserData";
 import apiInstance from "../../services/axios";
 function Header() {
     const [isLoggedIn] = useAuthStore((state) => [state.isLoggedIn, state.user])
-    const [profilephoto, setprofilephoto] = useState("http://127.0.0.1:8000/media/image/img3.jpeg");
+    const [profilephoto, setprofilephoto] = useState(`${import.meta.env.VITE_API_URL_MEDIA}/image/img3.jpeg`);
     const fetchProfile = () => {
         try {
             apiInstance.get(`user/profile/${useUserData()?.user_id}/`).then((res) => {
@@ -67,7 +67,7 @@ function Header() {
                                 <li className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle active" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {/* User */}
-                                        <img src={profilephoto || "http://127.0.0.1:8000/media/image/img3.jpeg"} alt="Profile" style={{ width: "35px", height: "30px", borderRadius: "50%" }} />
+                                        <img src={profilephoto || `${import.meta.env.VITE_API_URL_MEDIA}/image/img3.jpeg`} alt="Profile" style={{ width: "35px", height: "30px", borderRadius: "50%" }} />
                                     </a>
                                     <ul className="dropdown-menu" aria-labelledby="pagesMenu">
                                         <li>
